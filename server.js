@@ -30,6 +30,8 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true })
   .then(client => {
     console.log('Connected to Database')
     const db = client.db('star-wars-quotes')
+    //specify collection
+    const quotesCollection = db.collection('quotes');
 
     //CRUD Methods----------------------------------------------------------------
     //GET request
@@ -40,8 +42,17 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true })
 
     //POST request
     app.post('/quotes', (req,res) => {
-        console.log(req.body);
+        //console.log(req.body);
         //res.send("post received")
+
+        //insert quotes into collection
+        quotesCollection.insertOne(req.body)
+            .then(result => {
+                console.log(result => {
+                    res.redirect("/")
+                })
+            })
+            .catch(error => console.error(error))
     })
 
 
